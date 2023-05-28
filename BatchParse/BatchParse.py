@@ -37,6 +37,27 @@ def parse(code: str, parse_and: bool = False) -> list:
     return parsed_code
 
 
+def parse_heavy(code: str, parse_and: bool = False) -> list:
+    """Parses code and returns a dict with all the elements of the code and different infot that the user might want to know
+
+    Args:
+        code (str): Code to Parse
+        parse_and (bool, optional): if user wants to parse and Defaults to False.
+
+    Returns:
+        list: Parsed code as a list with [[code, dict], [code, dict], [code, dict]] (EXAMPLE)
+    """
+
+    final_arr = []
+
+    initial_parse = parse(code, parse_and)
+    for array in initial_parse:
+        dict_parse = info_gather(array)
+        final_arr.append([array, dict_parse])
+
+    return final_arr
+
+
 def get_method(line: str) -> str:
     """Get's the Method from a line of Batch Code
 
@@ -83,3 +104,17 @@ def __parse_and(code: list) -> list:
             parsed_code.append(line)
 
     return parsed_code
+
+
+def info_gather(code: str) -> dict:
+    """Gathers information about the code
+
+    Args:
+        code (str): Code to gather information about
+
+    Returns:
+        dict: Returns a dict with the information about the code
+    """
+    info = {"method": get_method(code), "args": get_args(code), "raw": code}
+
+    return info
