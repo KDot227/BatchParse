@@ -1,7 +1,7 @@
 @echo off
 
 python -m pip uninstall BatchParse -y
-python -m setup.py bdist_wheel
+python -m build
 
 for /F "delims=" %%i in ('dir /b dist\*.whl') do set "whl=%%i"
 

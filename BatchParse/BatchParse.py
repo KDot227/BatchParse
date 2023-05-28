@@ -1,4 +1,8 @@
-def parse(code: str, parse_and: bool = False) -> list:
+from .util.info import *
+from .util.settings import Settings
+
+
+def parse(code: str, split_and: bool = False) -> list:
     """Parse initial Batch Code
 
     Args:
@@ -9,14 +13,14 @@ def parse(code: str, parse_and: bool = False) -> list:
     """
     code_to_array = code.split("\n")
 
-    if parse_and:
-        code_to_array = __parse_and(code_to_array)
+    if split_and:
+        code_to_array = parse_and(code_to_array)
 
     parsed_code = []
 
-    allowed_methods = ["@"]
+    allowed_methods = Settings.allowed_methods
 
-    ignorable_lines = ["\n", ""]
+    ignorable_lines = Settings.ignorable_lines
 
     # if line doesn't start with a letter then we just ignore everything up until the first letter
 
@@ -37,7 +41,7 @@ def parse(code: str, parse_and: bool = False) -> list:
     return parsed_code
 
 
-def parse_heavy(code: str, parse_and: bool = False) -> list:
+def parse_heavy(code: str, split_and: bool = False) -> list:
     """Parses code and returns a dict with all the elements of the code and different infot that the user might want to know
 
     Args:
@@ -50,103 +54,9 @@ def parse_heavy(code: str, parse_and: bool = False) -> list:
 
     final_arr = []
 
-    initial_parse = parse(code, parse_and)
+    initial_parse = parse(code, split_and=split_and)
     for array in initial_parse:
         dict_parse = info_gather(array)
         final_arr.append([array, dict_parse])
 
     return final_arr
-
-
-def get_method(line: str) -> str:
-    """Get's the Method from a line of Batch Code
-
-    Args:
-        line (str): Line of Batch Code
-
-    Returns:
-        str: Returns the Method of the Batch Code
-    """
-    return line.split(" ")[0]
-
-
-def get_args(line: str) -> str:
-    """Get's the Arguments from a line of Batch Code
-
-    Args:
-        line (str): Line of Batch Code
-
-    Returns:
-        str: Returns the Arguments of the Batch Code as a single string
-    """
-    return " ".join(line.split(" ")[1:])
-
-
-def __parse_and(code: list) -> list:
-    """
-    Parse the Batch Code for the AND Operator
-
-    Args:
-        code (list): Batch Code as an Array
-
-    Returns:
-        list: Returns Parsed Batch Code as an Array
-    """
-    parsed_code = []
-
-    for line in code:
-        if " & " in line or " && " in line:
-            if " & " in line:
-                parsed_code.extend(line.split(" & "))
-            elif " && " in line:
-                parsed_code.extend(line.split(" && "))
-        else:
-            parsed_code.append(line)
-
-    return parsed_code
-
-
-def info_gather(code: str) -> dict:
-    """Gathers information about the code
-
-    Args:
-        code (str): Code to gather information about
-
-    Returns:
-        dict: Returns a dict with the information about the code
-    """
-    info = {
-        "method": get_method(code),
-        "args": get_args(code),
-        "length": __get_length(code),
-        "valid_command_length": valid_length(__get_length(code)),
-        "raw": code,
-    }
-
-    return info
-
-
-def __get_length(code: str) -> int:
-    """Get's the length of the code
-
-    Args:
-        code (str): Code to get the length of
-
-    Returns:
-        int: Returns the length of the code
-    """
-
-    # NOTE THIS MIGHT NOT BE ACCURATE DUE TO CODEPAGES AND OTHER FACTORS!!!
-    return len(code)
-
-
-def valid_length(length: int) -> bool:
-    """Check if the length of the code is valid with windows batch standards or else the command overflows
-
-    Args:
-        length (int): Initial Length of command
-
-    Returns:
-        bool: True or False if the length is valid
-    """
-    return length <= 8191

@@ -17,5 +17,5 @@ echo hello world && echo this is a test
 pause
 exit"""
 
-parsed = parse_heavy(code, parse_and=True)
+parsed = parse_heavy(code, split_and=True)
 print(parsed)
