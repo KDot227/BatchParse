@@ -115,6 +115,38 @@ def info_gather(code: str) -> dict:
     Returns:
         dict: Returns a dict with the information about the code
     """
-    info = {"method": get_method(code), "args": get_args(code), "raw": code}
+    info = {
+        "method": get_method(code),
+        "args": get_args(code),
+        "length": __get_length(code),
+        "valid_command_length": valid_length(__get_length(code)),
+        "raw": code,
+    }
 
     return info
+
+
+def __get_length(code: str) -> int:
+    """Get's the length of the code
+
+    Args:
+        code (str): Code to get the length of
+
+    Returns:
+        int: Returns the length of the code
+    """
+
+    # NOTE THIS MIGHT NOT BE ACCURATE DUE TO CODEPAGES AND OTHER FACTORS!!!
+    return len(code)
+
+
+def valid_length(length: int) -> bool:
+    """Check if the length of the code is valid with windows batch standards or else the command overflows
+
+    Args:
+        length (int): Initial Length of command
+
+    Returns:
+        bool: True or False if the length is valid
+    """
+    return length <= 8191

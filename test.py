@@ -1,14 +1,21 @@
-from BatchParse import parse
+from BatchParse import parse_heavy
+
+# code = """
+# @echo off
+# echo this is a test
+# echo this is a test
+# echo this is a test
+#
+# pause
+# exit
+# """
 
 code = """
 @echo off
-echo this is a test
-echo this is a test
-echo this is a test
+echo hello world && echo this is a test
 
 pause
-exit
-"""
+exit"""
 
-parsed = parse(code)
+parsed = parse_heavy(code, parse_and=True)
 print(parsed)
