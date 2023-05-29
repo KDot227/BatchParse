@@ -70,7 +70,6 @@ def parse_heavy(code: str, split_and: bool = False) -> list:
     Args:
         code (str): Code to Parse
         parse_and (bool, optional): if user wants to parse and Defaults to False.
-
     Returns:
         list: Parsed code as a list with [[code, dict], [code, dict], [code, dict]] (EXAMPLE)
     """
