@@ -1,8 +1,11 @@
 @echo off
 
 python -m pip uninstall BatchParse -y
+python -m pip install rich build
 python -m build
 
 for /F "delims=" %%i in ('dir /b dist\*.whl') do set "whl=%%i"
 
 python -m pip install dist\%whl%
+
+python -m test

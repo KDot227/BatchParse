@@ -22,30 +22,6 @@ def get_args(line: str) -> str:
     return " ".join(line.split(" ")[1:])
 
 
-def parse_and(code: list) -> list:
-    """
-    Parse the Batch Code for the AND Operator
-
-    Args:
-        code (list): Batch Code as an Array
-
-    Returns:
-        list: Returns Parsed Batch Code as an Array
-    """
-    parsed_code = []
-
-    for line in code:
-        if " & " in line or " && " in line:
-            if " & " in line:
-                parsed_code.extend(line.split(" & "))
-            elif " && " in line:
-                parsed_code.extend(line.split(" && "))
-        else:
-            parsed_code.append(line)
-
-    return parsed_code
-
-
 def info_gather(code: str) -> dict:
     """Gathers information about the code
 
@@ -60,6 +36,8 @@ def info_gather(code: str) -> dict:
         "args": get_args(code),
         "length": __get_length(code),
         "valid_command_length": valid_length(__get_length(code)),
+        "echo_to_file": echo_to_file(code),
+        "get_from_file": get_from_file(code),
         "raw": code,
     }
 
@@ -90,3 +68,19 @@ def valid_length(length: int) -> bool:
         bool: True or False if the length is valid
     """
     return length <= 8191
+
+
+def echo_to_file(code: str) -> bool:
+    possible_methods = [">", ">>"]
+    unallowed_methods = ["^>", "^>>", ">^>", "^>^>"]
+    return any([method in code for method in possible_methods]) and not any(
+        [method in code for method in unallowed_methods]
+    )
+
+
+def get_from_file(code: str) -> bool:
+    possible_methods = ["<"]
+    unallowed_methods = ["^<"]
+    return any([method in code for method in possible_methods]) and not any(
+        [method in code for method in unallowed_methods]
+    )

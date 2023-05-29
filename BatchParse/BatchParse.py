@@ -1,5 +1,28 @@
+import logging
+
 from .util.info import *
+from .util.splitting import *
 from .util.settings import Settings
+
+from rich.logging import RichHandler
+from rich.progress import track
+from rich.traceback import install
+
+install(show_locals=True)
+
+debug = False
+
+handler = RichHandler(rich_tracebacks=True, tracebacks_show_locals=True)
+
+if debug:
+    logging.basicConfig(
+        level=logging.DEBUG, format="%(message)s", datefmt="[%X]", handlers=[handler]
+    )
+else:
+    logging.basicConfig(
+        level=logging.INFO, format="%(message)s", datefmt="[%X]", handlers=[handler]
+    )
+logger = logging.getLogger("rich")
 
 
 def parse(code: str, split_and: bool = False) -> list:
@@ -29,7 +52,7 @@ def parse(code: str, split_and: bool = False) -> list:
         if line in ignorable_lines:
             code_to_array.remove(line)
 
-    for line in code_to_array:
+    for line in track(code_to_array, description="Parsing Batch Code LIGHT..."):
         if not line[0].isalpha() and not line[0] in allowed_methods:
             for char in line:
                 if char.isalpha():
@@ -55,8 +78,11 @@ def parse_heavy(code: str, split_and: bool = False) -> list:
     final_arr = []
 
     initial_parse = parse(code, split_and=split_and)
-    for array in initial_parse:
+    logger.debug(f"Initial Parse: {initial_parse}")
+    for array in track(initial_parse, description="Parsing Batch Code HEAVY..."):
+        logger.debug(f"Array: {array}")
         dict_parse = info_gather(array)
+        logger.debug(f"Dict Parse: {dict_parse}")
         final_arr.append([array, dict_parse])
 
     return final_arr

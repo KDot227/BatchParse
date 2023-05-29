@@ -12,7 +12,7 @@ setup(
     author="kdot227",
     license="MIT",
     packages=find_packages(),
-    install_requires=[],
+    install_requires=["rich"],
     keywords="conversion",
     classifiers=[
         "Intended Audience :: Developers",
