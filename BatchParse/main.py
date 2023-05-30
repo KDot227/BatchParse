@@ -25,7 +25,12 @@ else:
 logger = logging.getLogger("rich")
 
 
-def parse(code: str, bsplit_and: bool = True, bsplit_carrot: bool = True) -> list:
+def parse(
+    code: str,
+    bsplit_and: bool = True,
+    bsplit_carrot: bool = True,
+    bsplit_script_block: bool = True,
+) -> list:
     """Parse initial Batch Code
 
     Args:
@@ -39,11 +44,13 @@ def parse(code: str, bsplit_and: bool = True, bsplit_carrot: bool = True) -> lis
     functions = [
         parse_and,
         parse_carrot,
+        parse_script_block,
     ]
 
     bool_parse = [
         bsplit_and,
         bsplit_carrot,
+        bsplit_script_block,
     ]
 
     for function in track(functions, description="Splitting Batch Code..."):

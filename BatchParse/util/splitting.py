@@ -1,3 +1,6 @@
+import re
+
+
 def parse_and(code: list) -> list:
     """
     Parse the Batch Code for the AND Operator
@@ -39,3 +42,43 @@ def parse_carrot(code: list) -> list:
             code.pop(index + 1)
 
     return code
+
+
+def parse_script_block(code: list) -> list:
+    """Parses the Batch Code for Script Blocks
+
+    Args:
+        code (list): Batch Code as an Array
+
+    Returns:
+        list: Returns Parsed Batch Code as an Array
+    """
+    parsed_code = []
+    i = 0
+    while i < len(code):
+        line = code[i].strip()
+
+        if line.endswith("("):
+            while not line.endswith(")"):
+                i += 1
+                next_line = code[i].strip()
+                # Add '&' between lines cause it can't just do stuff like allat
+                line += " & " + next_line
+
+            line = line.replace("\n", " ").replace("\r", "")
+            line = " ".join(line.split())
+
+            # regex cause im a RE tard
+            # that was funny asf ngl
+            matches = re.findall(r"\((.*?)\)", line)
+            for match in matches:
+                if match.startswith(" &"):
+                    modified_match = match[2:-2]
+                    line = line.replace(match, modified_match)
+                else:
+                    modified_match = match
+
+        if line:
+            parsed_code.append(line + "\n")
+        i += 1
+    return parsed_code

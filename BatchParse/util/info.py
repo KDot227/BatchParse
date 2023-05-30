@@ -7,7 +7,11 @@ def get_method(line: str) -> str:
     Returns:
         str: Returns the Method of the Batch Code
     """
-    return line.split(" ")[0]
+    out = line.split(" ")[0]
+    if not out.startswith(":"):
+        return out
+    else:
+        return "label: " + out[1:]
 
 
 def get_args(line: str) -> str:
