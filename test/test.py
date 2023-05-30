@@ -12,8 +12,7 @@ from BatchParse import parse_heavy
 
 code = """
 @echo off
-echo hello world && echo this is a test
-
+echo hello world && echo this is a test ^
 pause
 exit"""
 

@@ -23,6 +23,14 @@ def parse_and(code: list) -> list:
 
 
 def parse_carrot(code: list) -> list:
+    """Parses the Batch Code for the Carrot Operator
+
+    Args:
+        code (list): Batch Code as an Array
+
+    Returns:
+        list: Returns Parsed Batch Code as an Array
+    """
     # if the line ends with a carrot then it's escaping the next line character so we add that line to the old one as if there was just a space
     for line in code:
         if line.endswith("^"):

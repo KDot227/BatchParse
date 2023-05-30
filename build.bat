@@ -7,5 +7,3 @@ python -m build
 for /F "delims=" %%i in ('dir /b dist\*.whl') do set "whl=%%i"
 
 python -m pip install dist\%whl%
-
-python -m test
