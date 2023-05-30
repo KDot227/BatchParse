@@ -25,7 +25,7 @@ else:
 logger = logging.getLogger("rich")
 
 
-def parse(code: str, split_and: bool = False) -> list:
+def parse(code: str, bsplit_and: bool = True, bsplit_carrot: bool = True) -> list:
     """Parse initial Batch Code
 
     Args:
@@ -36,8 +36,17 @@ def parse(code: str, split_and: bool = False) -> list:
     """
     code_to_array = code.split("\n")
 
-    if split_and:
-        code_to_array = parse_and(code_to_array)
+    initial_split_methods = {
+        bsplit_and: parse_and,
+        bsplit_carrot: parse_carrot,
+    }
+
+    # if split_and:
+    #    code_to_array = parse_and(code_to_array)
+
+    for method in initial_split_methods:
+        if method:
+            code_to_array = initial_split_methods[method](code_to_array)
 
     parsed_code = []
 
@@ -64,7 +73,7 @@ def parse(code: str, split_and: bool = False) -> list:
     return parsed_code
 
 
-def parse_heavy(code: str, split_and: bool = False) -> list:
+def parse_heavy(code: str, bsplit_and: bool = True) -> list:
     """Parses code and returns a dict with all the elements of the code and different infot that the user might want to know
 
     Args:
@@ -76,7 +85,7 @@ def parse_heavy(code: str, split_and: bool = False) -> list:
 
     final_arr = []
 
-    initial_parse = parse(code, split_and=split_and)
+    initial_parse = parse(code, bsplit_and=bsplit_and)
     logger.debug(f"Initial Parse: {initial_parse}")
     for array in track(initial_parse, description="Parsing Batch Code HEAVY..."):
         logger.debug(f"Array: {array}")

@@ -1,5 +1,7 @@
 from BatchParse import parse_heavy
 
+from rich import print
+
 # code = """
 # @echo off
 # echo this is a test
@@ -16,5 +18,5 @@ echo hello world && echo this is a test ^
 pause
 exit"""
 
-parsed = parse_heavy(code, split_and=True)
+parsed = parse_heavy(code)
 print(parsed)
