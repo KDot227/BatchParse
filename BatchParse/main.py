@@ -36,17 +36,19 @@ def parse(code: str, bsplit_and: bool = True, bsplit_carrot: bool = True) -> lis
     """
     code_to_array = code.split("\n")
 
-    initial_split_methods = {
-        bsplit_and: parse_and,
-        bsplit_carrot: parse_carrot,
-    }
+    functions = [
+        parse_and,
+        parse_carrot,
+    ]
 
-    # if split_and:
-    #    code_to_array = parse_and(code_to_array)
+    bool_parse = [
+        bsplit_and,
+        bsplit_carrot,
+    ]
 
-    for method in initial_split_methods:
-        if method:
-            code_to_array = initial_split_methods[method](code_to_array)
+    for function in track(functions, description="Splitting Batch Code..."):
+        if bool_parse[functions.index(function)]:
+            code_to_array = function(code_to_array)
 
     parsed_code = []
 
