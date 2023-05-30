@@ -53,6 +53,14 @@ def parse_script_block(code: list) -> list:
     Returns:
         list: Returns Parsed Batch Code as an Array
     """
+
+    for line in code:
+        ammount_of_indents = len(re.findall("^ *", line)[0])
+        if ammount_of_indents >= 12:
+            raise Exception(
+                "You have more than 12 spaces for 1 indent. Please don't use more than 4 and chain your indents into 1 line."
+            )
+
     parsed_code = []
     i = 0
     while i < len(code):
