@@ -44,7 +44,7 @@ def parse_carrot(code: list) -> list:
     return code
 
 
-def parse_script_block(code: list) -> list:
+def parse_script_block(code: list, ignore_indents: bool = False) -> list:
     """Parses the Batch Code for Script Blocks
 
     Args:
@@ -54,12 +54,13 @@ def parse_script_block(code: list) -> list:
         list: Returns Parsed Batch Code as an Array
     """
 
-    for line in code:
-        ammount_of_indents = len(re.findall("^ *", line)[0])
-        if ammount_of_indents >= 12:
-            raise Exception(
-                "You have more than 12 spaces for 1 indent. Please don't use more than 4 and chain your indents into 1 line."
-            )
+    if ignore_indents:
+        for line in code:
+            ammount_of_indents = len(re.findall("^ *", line)[0])
+            if ammount_of_indents >= 12:
+                raise Exception(
+                    "You have more than 12 spaces for 1 indent. Please don't use more than 4 and chain your indents into 1 line."
+                )
 
     parsed_code = []
     i = 0
