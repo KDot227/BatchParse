@@ -26,7 +26,7 @@ logger = logging.getLogger("rich")
 
 
 def parse(
-    code: str,
+    code,
     bsplit_and: bool = True,
     bsplit_carrot: bool = True,
     bsplit_script_block: bool = True,
@@ -39,18 +39,24 @@ def parse(
     Returns:
         list: Returns Parsed Batch Code as an Array
     """
-    code_to_array = code.split("\n")
+
+    if isinstance(code, str):
+        code_to_array = code.split("\n")
+    elif isinstance(code, list):
+        code_to_array = code
+    else:
+        raise TypeError("code must be a string or list")
 
     functions = [
         parse_and,
         parse_carrot,
-        parse_script_block,
+        # parse_script_block,
     ]
 
     bool_parse = [
         bsplit_and,
         bsplit_carrot,
-        bsplit_script_block,
+        # bsplit_script_block,
     ]
 
     for function in track(functions, description="Splitting Batch Code..."):

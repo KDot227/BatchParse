@@ -12,8 +12,7 @@ from rich import print
 # exit
 # """
 
-code = """
-@echo off
+code = """@echo off
 echo hello world && echo this is a test ^
 pause
 if 1==1 (
@@ -21,6 +20,8 @@ if 1==1 (
     echo this is a test
 )
 exit"""
+
+code = code.split("\n")
 
 parsed = parse_heavy(code)
 print(parsed)
