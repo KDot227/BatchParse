@@ -5,7 +5,6 @@ from .util.splitting import *
 from .util.settings import Settings
 
 from rich.logging import RichHandler
-from rich.progress import track
 from rich.traceback import install
 
 install(show_locals=True)
@@ -59,7 +58,7 @@ def parse(
         # bsplit_script_block,
     ]
 
-    for function in track(functions, description="Splitting Batch Code..."):
+    for function in functions:
         if bool_parse[functions.index(function)]:
             code_to_array = function(code_to_array)
 
@@ -76,7 +75,7 @@ def parse(
         if line in ignorable_lines:
             code_to_array.remove(line)
 
-    for line in track(code_to_array, description="Parsing Batch Code LIGHT..."):
+    for line in code_to_array:
         if not line[0].isalpha() and not line[0] in allowed_methods:
             for char in line:
                 if char.isalpha():
@@ -102,7 +101,7 @@ def parse_heavy(code: str, bsplit_and: bool = True) -> list:
 
     initial_parse = parse(code, bsplit_and=bsplit_and)
     logger.debug(f"Initial Parse: {initial_parse}")
-    for array in track(initial_parse, description="Parsing Batch Code HEAVY..."):
+    for array in initial_parse:
         logger.debug(f"Array: {array}")
         dict_parse = info_gather(array)
         logger.debug(f"Dict Parse: {dict_parse}")
