@@ -1,4 +1,5 @@
 import re
+from typing import List, Union
 
 
 def parse_and(code: list) -> list:
@@ -44,7 +45,9 @@ def parse_carrot(code: list) -> list:
     return code
 
 
-def parse_script_block(code: list, ignore_indents: bool = False) -> list:
+def parse_script_block(
+    code: Union[List[str], str], ignore_indents: bool = False
+) -> list:
     """Parses the Batch Code for Script Blocks
 
     Args:
@@ -53,6 +56,9 @@ def parse_script_block(code: list, ignore_indents: bool = False) -> list:
     Returns:
         list: Returns Parsed Batch Code as an Array
     """
+
+    if isinstance(code, list):
+        code = "".join(code)
 
     if ignore_indents:
         for line in code:
