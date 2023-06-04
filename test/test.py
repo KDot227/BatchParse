@@ -13,13 +13,8 @@ from rich import print
 # """
 
 code = """@echo off
-echo hello world && echo this is a test ^
-pause
-if 1==1 (
-    echo hello world
-    echo this is a test
-)
-exit"""
+
+for %%I in (1,2,3,4,5,6,7,8,9,10) do echo %%I"""
 
 code = code.split("\n")
 

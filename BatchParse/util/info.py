@@ -1,3 +1,6 @@
+import re
+
+
 def get_method(line: str) -> str:
     """Get's the Method from a line of Batch Code
 
@@ -45,6 +48,9 @@ def info_gather(code: str) -> dict:
         "raw": code,
     }
 
+    if info["method"] == "for":
+        info["for_args"] = get_info_for(code)
+
     return info
 
 
@@ -88,3 +94,19 @@ def get_from_file(code: str) -> bool:
     return any([method in code for method in possible_methods]) and not any(
         [method in code for method in unallowed_methods]
     )
+
+
+def get_info_for(code: str) -> list:
+    args_total = {}
+    insides_regex = re.compile(r"\(.*\)")
+    first_arg = code.split(" ")[1]
+    if first_arg.startswith("/"):
+        args_total["flags"] = first_arg
+        args_total["variable"] = code.split(" ")[2]
+        args_total["insides"] = insides_regex.findall(code)[0]
+        args_total["afterwards"] = code.split("do")[1].strip().replace("\n", "")
+    else:
+        args_total["variable"] = first_arg
+        args_total["insides"] = insides_regex.findall(code)[0]
+        args_total["afterwards"] = code.split("do")[1].strip().replace("\n", "")
+    return args_total
