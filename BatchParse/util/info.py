@@ -45,6 +45,7 @@ def info_gather(code: str) -> dict:
         "valid_command_length": valid_length(__get_length(code)),
         "echo_to_file": echo_to_file(code),
         "get_from_file": get_from_file(code),
+        "variable": __check_variable(code),
         "raw": code,
     }
 
@@ -66,6 +67,15 @@ def __get_length(code: str) -> int:
 
     # NOTE THIS MIGHT NOT BE ACCURATE DUE TO CODEPAGES AND OTHER FACTORS!!!
     return len(code)
+
+
+def __check_variable(code: str) -> bool:
+    variable_regex_1 = re.compile(r"%.*%")
+    variable_regex_2 = re.compile(r"%~.*")
+
+    if variable_regex_1.findall(code) or variable_regex_2.findall(code):
+        return True
+    return False
 
 
 def valid_length(length: int) -> bool:
